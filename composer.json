@@ -10,5 +10,6 @@
     }
   ],
   "require": {
+    "symfony/symfony": "^8.0"
   }
 }

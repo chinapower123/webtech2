@@ -1,0 +1,14 @@
+{
+  "name": "vendor_name/webtech2",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "laken",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  }
+}

@@ -2,6 +2,8 @@
 
 namespace Framework\Kernel;
 
+use Framework\Http\RequestInterface;
+
 /**
  * Handles a server request and produces a response.
  *
@@ -15,9 +17,8 @@ interface KernelInterface
      *
      * May call other collaborating code to generate the response.
      *
-     * @param array $get The contents of the $_GET superglobal.
-     * @param array $post The contents of the $_POST superglobal.
+     * @param RequestInterface $request The server request.
      * @return string The response as a string.
      */
-    public function handle(array $get, array $post): string;
+    public function handle(RequestInterface $request): string;
 }

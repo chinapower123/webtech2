@@ -3,6 +3,7 @@
 namespace Framework\Kernel;
 
 use Framework\Http\RequestInterface;
+use Framework\Http\ResponseInterface;
 
 /**
  * Handles a server request and produces a response.
@@ -18,7 +19,7 @@ interface KernelInterface
      * May call other collaborating code to generate the response.
      *
      * @param RequestInterface $request The server request.
-     * @return string The response as a string.
+     * @return ResponseInterface The response.
      */
-    public function handle(RequestInterface $request): string;
+    public function handle(RequestInterface $request): ResponseInterface;
 }

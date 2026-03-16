@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Http;
+namespace src\HTTP;
 
 /**
  * Value object representing a file uploaded through an HTTP request.

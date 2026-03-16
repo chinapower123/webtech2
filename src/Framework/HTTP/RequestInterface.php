@@ -1,6 +1,6 @@
 <?php
 
-namespace src\HTTP;
+namespace Framework\HTTP;
 
 use Uri\Rfc3986\Uri;
 

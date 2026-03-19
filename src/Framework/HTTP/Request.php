@@ -21,9 +21,38 @@ class Request implements RequestInterface {
         );
     }
 
+    function getMethod(): string
+    {
+        return $this->server['REQUEST_METHOD'] ?? 'GET';
+    }
+
+    function getUri(): Uri
+    {
+        $uri = $this->server['REQUEST_URI'] ?? '/';
+        return new Uri($uri);
+    }
+
+    function getQueryParams(): array
+    {
+        return $this->get;
+    }
+
+    function getParsedBody(): null|array
+    {
+        if ($this->getMethod() === 'POST') {
+            return $this->post;
+        }
+        return null;
+    }
+
+    function getUploadedFiles(): array
+    {
+        return $this->files;
+    }
+
     function getHeaders(): array
     {
-
+        // TODO: Implement getHeaders() method.
     }
 
     function hasHeader(string $name): bool
@@ -46,17 +75,6 @@ class Request implements RequestInterface {
         // TODO: Implement withoutHeader() method.
     }
 
-    function getMethod(): string
-    {
-        return $this->server['REQUEST_METHOD'] ?? 'GET';
-    }
-
-    function getUri(): Uri
-    {
-        $uri = $this->server['REQUEST_URI'] ?? '/';
-        return new Uri($uri);
-    }
-
     function getServerParams(): array
     {
         // TODO: Implement getServerParams() method.
@@ -65,21 +83,6 @@ class Request implements RequestInterface {
     function getCookieParams(): array
     {
         // TODO: Implement getCookieParams() method.
-    }
-
-    function getQueryParams(): array
-    {
-        // TODO: Implement getQueryParams() method.
-    }
-
-    function getUploadedFiles(): array
-    {
-        // TODO: Implement getUploadedFiles() method.
-    }
-
-    function getParsedBody(): null|array
-    {
-        // TODO: Implement getParsedBody() method.
     }
 
     function getAttributes(): array

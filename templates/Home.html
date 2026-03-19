@@ -1,0 +1,48 @@
+<?php ?>
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<nav>
+    <a href="Home.html">Bladzijde</a>
+    <a href="Overview.html">Boeken</a>
+    <a href="Login.html">Inloggen</a>
+    <a href="Registration.html">Registreren</a>
+</nav>
+
+<hr>
+
+<h1>Zoek en review boeken</h1>
+
+<form action="/zoeken" method="GET">
+    <input type="text" name="q" placeholder="Zoek op titel of auteur…">
+    <button type="submit">Zoeken</button>
+</form>
+
+<br>
+
+<p>Genres:</p>
+<a href="Overview.html">Alle</a> |
+<a href="Overview.html?genre=roman">Roman</a> |
+<a href="Overview.html?genre=thriller">Thriller</a> |
+<a href="Overview.html?genre=sciencefiction">Sciencefiction</a> |
+<a href="Overview.html?genre=fantasy">Fantasy</a> |
+
+<hr>
+
+<h2>Populaire boeken</h2>
+
+<ul>
+    <li><a href="BookInfo.html?id=1">Titel van het boek — Auteur (sterren)</a></li>
+    <li><a href="BookInfo.html?id=2">Titel van het boek — Auteur (sterren)</a></li>
+    <li><a href="BookInfo.html?id=3">Titel van het boek — Auteur (sterren)</a></li>
+    <li><a href="BookInfo.html?id=4">Titel van het boek — Auteur (sterren)</a></li>
+</ul>
+
+</body>
+</html>

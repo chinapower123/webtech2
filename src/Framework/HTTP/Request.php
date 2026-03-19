@@ -7,7 +7,8 @@ class Request implements RequestInterface {
     private function __construct(
         private array $get,
         private array $post = [],
-        private array $files = []
+        private array $files = [],
+        private array $server = []
     ) {}
 
     static public function fromGlobals(): self
@@ -16,12 +17,13 @@ class Request implements RequestInterface {
             $_GET,
             $_POST,
             $_FILES,
+            $_SERVER,
         );
     }
 
     function getHeaders(): array
     {
-        // TODO: Implement getHeaders() method.
+
     }
 
     function hasHeader(string $name): bool
@@ -46,12 +48,13 @@ class Request implements RequestInterface {
 
     function getMethod(): string
     {
-        // TODO: Implement getMethod() method.
+        return $this->server['REQUEST_METHOD'] ?? 'GET';
     }
 
     function getUri(): Uri
     {
-        // TODO: Implement getUri() method.
+        $uri = $this->server['REQUEST_URI'] ?? '/';
+        return new Uri($uri);
     }
 
     function getServerParams(): array

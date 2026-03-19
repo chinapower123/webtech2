@@ -10,6 +10,12 @@
     }
   ],
   "require": {
-    "symfony/symfony": "^8.0"
+    "symfony/symfony": "^8.0",
+    "ext-uri": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/"
+    }
   }
 }

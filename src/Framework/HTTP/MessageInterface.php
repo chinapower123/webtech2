@@ -1,6 +1,6 @@
 <?php
 
-namespace src\HTTP;
+namespace Framework\HTTP;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3382eafa0d86c46f1b5f549b54690aea",
+    "content-hash": "d8062c8953d457929a77317d0e9d9161",
     "packages": [
         {
             "name": "composer/semver",
@@ -1400,16 +1400,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v8.0.6",
+            "version": "v8.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "6a29000b1486402f2bdf5815fc3c01aab923d722"
+                "reference": "16c25f2086713a70f8db03f77f6183d3af6307e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/6a29000b1486402f2bdf5815fc3c01aab923d722",
-                "reference": "6a29000b1486402f2bdf5815fc3c01aab923d722",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/16c25f2086713a70f8db03f77f6183d3af6307e7",
+                "reference": "16c25f2086713a70f8db03f77f6183d3af6307e7",
                 "shasum": ""
             },
             "require": {
@@ -1623,7 +1623,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/symfony/issues",
-                "source": "https://github.com/symfony/symfony/tree/v8.0.6"
+                "source": "https://github.com/symfony/symfony/tree/v8.0.7"
             },
             "funding": [
                 {
@@ -1643,20 +1643,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-26T08:56:11+00:00"
+            "time": "2026-03-06T16:59:05+00:00"
         },
         {
             "name": "twig/twig",
-            "version": "v3.23.0",
+            "version": "v3.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "a64dc5d2cc7d6cafb9347f6cd802d0d06d0351c9"
+                "reference": "a6769aefb305efef849dc25c9fd1653358c148f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a64dc5d2cc7d6cafb9347f6cd802d0d06d0351c9",
-                "reference": "a64dc5d2cc7d6cafb9347f6cd802d0d06d0351c9",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a6769aefb305efef849dc25c9fd1653358c148f0",
+                "reference": "a6769aefb305efef849dc25c9fd1653358c148f0",
                 "shasum": ""
             },
             "require": {
@@ -1666,7 +1666,8 @@
                 "symfony/polyfill-mbstring": "^1.3"
             },
             "require-dev": {
-                "phpstan/phpstan": "^2.0",
+                "php-cs-fixer/shim": "^3.0@stable",
+                "phpstan/phpstan": "^2.0@stable",
                 "psr/container": "^1.0|^2.0",
                 "symfony/phpunit-bridge": "^5.4.9|^6.4|^7.0"
             },
@@ -1710,7 +1711,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.23.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.24.0"
             },
             "funding": [
                 {
@@ -1722,7 +1723,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-23T21:00:41+00:00"
+            "time": "2026-03-17T21:31:11+00:00"
         }
     ],
     "packages-dev": [],
@@ -1731,7 +1732,9 @@
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "ext-uri": "*"
+    },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
 }

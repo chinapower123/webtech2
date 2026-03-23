@@ -1,14 +1,12 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-use Framework\HTTP\Request;
+use Framework\Http\Request;
+use Framework\Kernel\Kernel;
 
-$_SERVER['REQUEST_METHOD'] = 'GET';
-$_SERVER['REQUEST_URI'] = '/books?page=2';
-
+$kernel = new Kernel();
 $request = Request::fromGlobals();
+$response = $kernel->handle($request);
 
-var_dump($request->getMethod());
-var_dump($request->getUri());
-var_dump($request->getUri()->getPath());
+echo $response->getBody();

@@ -13,18 +13,17 @@ class Router implements RouterInterface{
         $this->routes = $routes;
     }
 
-    function route(RequestInterface $request): callable
+    public function route(RequestInterface $request): callable
     {
-        $uri = $request->getUri();
-        $path = parse_url($uri, PHP_URL_PATH);
+        $path = $request->getUri()->getPath();
 
         foreach ($this->routes as $route => $handler) {
-            if($path === $route) {
+            if ($path === $route) {
                 return $handler;
             }
         }
 
-        return function(){
+        return function() {
             return "404 page not found";
         };
     }

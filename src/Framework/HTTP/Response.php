@@ -2,6 +2,9 @@
 
 namespace Framework\Http;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Response implements ResponseInterface{
     private string $body;
 
@@ -12,11 +15,14 @@ class Response implements ResponseInterface{
         string      $body = null
     ){
         $this->body = $body ?? '';
+        $this->headers = $headers;
+        $this->protocol_version = $protocol_version;
+        $this->status_code = 200;
     }
 
     function getHeaders(): array
     {
-        // TODO: Implement getHeaders() method.
+        return $this->headers;
     }
 
     function hasHeader(string $name): bool
@@ -41,7 +47,7 @@ class Response implements ResponseInterface{
 
     function getStatusCode(): int
     {
-        // TODO: Implement getStatusCode() method.
+        return $this->status_code;
     }
 
     public function withStatusCode(int $code): static

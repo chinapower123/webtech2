@@ -4,7 +4,7 @@ namespace Framework\Routing;
 
 use Framework\Http\RequestInterface;
 
-class Router implements RouterInterface{
+class Router implements RouterInterface {
 
     private array $routes = [];
 
@@ -19,6 +19,12 @@ class Router implements RouterInterface{
 
         foreach ($this->routes as $route => $handler) {
             if ($path === $route) {
+                if (is_array($handler)) {
+                    [$controllerClass, $method] = $handler;
+                    $controllerInstance = new $controllerClass();
+                    return [$controllerInstance, $method];
+                }
+
                 return $handler;
             }
         }

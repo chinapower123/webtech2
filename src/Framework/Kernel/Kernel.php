@@ -1,27 +1,23 @@
 <?php
 namespace Framework\Kernel;
 
-use Framework\Http\Request;
 use Framework\Http\RequestInterface;
 use Framework\Http\Response;
 use Framework\Http\ResponseInterface;
-use Framework\Routing\Router;
+use Framework\Routing\RouterInterface;
 
 class Kernel implements KernelInterface
 {
+    private RouterInterface $router;
+
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
     public function handle(RequestInterface $request): ResponseInterface
     {
-        $routes = [
-            '/'            => fn() => file_get_contents(__DIR__ . '/../../../templates/Home.html'),
-            '/boeken'      => fn() => file_get_contents(__DIR__ . '/../../../templates/Boeken.html'),
-            '/boek-info'   => fn() => file_get_contents(__DIR__ . '/../../../templates/BookInfo.html'),
-            '/login'       => fn() => file_get_contents(__DIR__ . '/../../../templates/Login.html'),
-            '/registreren' => fn() => file_get_contents(__DIR__ . '/../../../templates/Registration.html'),
-            '/admin'       => fn() => file_get_contents(__DIR__ . '/../../../templates/Admin.html'),
-        ];
-
-        $router = new Router($routes);
-        $controller = $router->route($request);
+        $controller = $this->router->route($request);
         $body = $controller();
 
         return new Response(200, '1.1', [], $body);

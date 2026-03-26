@@ -3,9 +3,12 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Framework\Http\Request;
-use Framework\Kernel\Kernel;
+use Framework\DependencyInjection\Container;
 
-$kernel = new Kernel();
+$container = new Container();
+
+$kernel = $container->createKernel();
+
 $request = Request::fromGlobals();
 $response = $kernel->handle($request);
 

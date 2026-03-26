@@ -24,7 +24,6 @@ class Router implements RouterInterface {
                     $controllerInstance = new $controllerClass();
                     return [$controllerInstance, $method];
                 }
-
                 return $handler;
             }
         }

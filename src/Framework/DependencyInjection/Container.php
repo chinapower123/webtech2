@@ -19,9 +19,7 @@ class Container
             '/login'       => fn() => $templateEngine->render('Login.html'),
             '/registreren' => fn() => $templateEngine->render('Registration.html'),
         ];
-
         $router = new \Framework\Routing\Router($routes);
-
         return new \Framework\Kernel\Kernel($router);
     }
 }

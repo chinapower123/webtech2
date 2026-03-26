@@ -11,7 +11,8 @@
   ],
   "require": {
     "symfony/symfony": "^8.0",
-    "ext-uri": "*"
+    "ext-uri": "*",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {

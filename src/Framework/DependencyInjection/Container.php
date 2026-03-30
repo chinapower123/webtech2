@@ -7,10 +7,10 @@ use Framework\Templating\TemplateEngine;
 
 class Container
 {
-    public function createKernel(): \Framework\Kernel\Kernel
+    public function createKernel(): Kernel
     {
         // pad naar templates map
-        $templateEngine = new \Framework\Templating\TemplateEngine(__DIR__ . '/../../../templates');
+        $templateEngine = new TemplateEngine(__DIR__ . '/../../../templates');
 
         $routes = [
             '/'            => fn() => $templateEngine->render('Home.html'),
@@ -19,7 +19,7 @@ class Container
             '/login'       => fn() => $templateEngine->render('Login.html'),
             '/registreren' => fn() => $templateEngine->render('Registration.html'),
         ];
-        $router = new \Framework\Routing\Router($routes);
-        return new \Framework\Kernel\Kernel($router);
+        $router = new Router($routes);
+        return new Kernel($router);
     }
 }

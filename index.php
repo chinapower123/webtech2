@@ -8,7 +8,6 @@ use Framework\DependencyInjection\Container;
 $container = new Container();
 
 $kernel = $container->createKernel();
-
 $request = Request::fromGlobals();
 $response = $kernel->handle($request);
 

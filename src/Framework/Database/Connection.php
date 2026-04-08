@@ -2,30 +2,31 @@
 namespace Framework\Database;
 use PDO;
 class Connection implements ConnectionInterface {
-    private PDO $connection;
+    private PDO $pdo;
     public function __construct(string $file) {
-        $file = realpath($file);
-        if(!$file) {
-            throw new \Exception('File not found');
+        if(!file_exists($file)){
+            throw new \Exception("Bestand bestaat niet");
+        }else{
+            $this->pdo = new PDO("sqlite:$file");
         }
-        $this->connection = new \PDO("sqlite:$file");
+
     }
-    public function query(string $query, ...$params): array
+    function query(string $query, ...$params): array
     {
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
 
-    public function execute(string $query, ...$params): int
+    function execute(string $query, ...$params): int
     {
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
         return $stmt->rowCount();
     }
 
-    public function getLastInsertId(): int
+    function getLastInsertId(): int
     {
-        return (int) $this->connection->lastInsertId();
+        return $this->pdo->lastInsertId();
     }
 }

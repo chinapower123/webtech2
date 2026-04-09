@@ -9,8 +9,14 @@
 <nav>
     <a href="/">De Biep</a>
     <a href="/boeken">Boeken</a>
+
+    <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+    <a href="/logout">Uitloggen</a>
+    <?php else: ?>
     <a href="/login">Inloggen</a>
     <a href="/registreren">Registreren</a>
+    <?php endif; ?>
 </nav>
 
 <hr>

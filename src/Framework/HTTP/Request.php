@@ -21,6 +21,11 @@ class Request implements RequestInterface {
         );
     }
 
+    public function getPostData(string $key, mixed $default = null): mixed
+    {
+        return $this->post[$key] ?? $default;
+    }
+
     function getMethod(): string
     {
         return $this->server['REQUEST_METHOD'] ?? 'GET';
@@ -87,21 +92,25 @@ class Request implements RequestInterface {
 
     function getAttributes(): array
     {
-        // TODO: Implement getAttributes() method.
+        return $this->attributes;
     }
 
     function getAttribute(string $name, mixed $default = null): mixed
     {
-        // TODO: Implement getAttribute() method.
+        return $this->attributes[$name] ?? $default;
     }
 
     function withAttribute(string $name, mixed $value): static
     {
-        // TODO: Implement withAttribute() method.
+        $clone = clone $this;
+        $clone->attributes[$name] = $value;
+        return $clone;
     }
 
     function withoutAttribute(string $name): static
     {
-        // TODO: Implement withoutAttribute() method.
+        $clone = clone $this;
+        unset($clone->attributes[$name]);
+        return $clone;
     }
 }

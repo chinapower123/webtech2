@@ -1,0 +1,27 @@
+<?php
+
+namespace Framework\AccessControl;
+
+/**
+ * A user, either a logged-in user or an anonymous user.
+ */
+interface UserInterface
+{
+    /**
+     * Get the user's username.
+     * @return string
+     */
+    function getUsername(): string;
+
+    /**
+     * Get the user's hashed password.
+     * @return string
+     */
+    function getPasswordHash(): string;
+
+    /**
+     * Get whether the user is an anonymous user, as opposed to a logged in user.
+     * @return bool
+     */
+    function isAnonymous(): bool;
+}

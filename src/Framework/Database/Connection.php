@@ -9,7 +9,6 @@ class Connection implements ConnectionInterface {
         }else{
             $this->pdo = new PDO("sqlite:$file");
         }
-
     }
     function query(string $query, ...$params): array
     {

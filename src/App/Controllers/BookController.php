@@ -2,7 +2,7 @@
 namespace App\Controllers;
 use Framework\Templating\TemplateEngine;
 
-class AdminController
+class BookController
 {
     private TemplateEngine $templateEngine;
 
@@ -11,6 +11,6 @@ class AdminController
     }
     public function index():string
     {
-        return $this->templateEngine->render('Admin.html');
+        return $this->templateEngine->render('boeken.html');
     }
 }

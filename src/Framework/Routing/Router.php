@@ -19,17 +19,12 @@ class Router implements RouterInterface {
 
         foreach ($this->routes as $route => $handler) {
             if ($path === $route) {
-                if (is_array($handler)) {
-                    [$controllerClass, $method] = $handler;
-                    $controllerInstance = new $controllerClass();
-                    return [$controllerInstance, $method];
-                }
                 return $handler;
             }
         }
 
-        return function() {
-            return "404 page not found";
-        };
+            return function () {
+                return "404 page not found";
+            };
+        }
     }
-}

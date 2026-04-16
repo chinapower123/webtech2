@@ -11,7 +11,11 @@
     <a href="/login">Inloggen</a>
     <a href="/registreren">Registreren</a>
 </nav>
-
+<?php if (isset($error) && $error): ?>
+<div style="color: white; background-color: #e74c3c; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+    <?= htmlspecialchars($error) ?>
+</div>
+<?php endif; ?>
 <form action="/login" method="post">
     <div>
         <label for="username">Gebruikersnaam:</label>

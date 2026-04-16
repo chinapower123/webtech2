@@ -1,9 +1,19 @@
 <?php
 namespace App\Controllers;
+
+use Framework\Http\RequestInterface;
+use Framework\Templating\TemplateEngine;
+
 class HomeController
 {
-    public function index():string
+    public function __construct(private TemplateEngine $templateEngine) {}
+
+    public function index(RequestInterface $request): string
     {
-        return file_get_contents(__DIR__ . '/../../../templates/Boeken.html');
+        $user = $request->getAttribute('user');
+
+        return $this->templateEngine->render('Home.html', [
+            'user' => $user
+        ]);
     }
 }

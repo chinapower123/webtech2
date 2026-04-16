@@ -24,6 +24,8 @@ class LoginController
 
     public function __invoke(RequestInterface $request): string
     {
+        $error = null;
+
         if ($request->getMethod() === 'POST') {
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
@@ -31,16 +33,16 @@ class LoginController
             $user = $this->userProvider->get($username);
 
             if (!$user->isAnonymous() && password_verify($password, $user->getPasswordHash())) {
-
                 $this->session['user'] = $user->getUsername();
-
                 header('Location: /');
                 exit;
             }
 
-            echo "Verkeerd wachtwoord of gebruikersnaam!";
+            $error = "Verkeerd wachtwoord of gebruikersnaam!";
         }
-
-        return $this->templateEngine->render('Login.html');
+        return $this->templateEngine->render('Login.html', [
+            'user'  => $request->getAttribute('user'),
+            'error' => $error
+        ]);
     }
 }

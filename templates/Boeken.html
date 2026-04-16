@@ -1,16 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Boeken</title>
+    <title>Boeken overzicht</title>
 </head>
 <body>
 <nav>
     <a href="/">De Biep</a>
     <a href="/boeken">Boeken</a>
+
+    <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+    <a href="/logout">Uitloggen</a>
+    <?php else: ?>
     <a href="/login">Inloggen</a>
     <a href="/registreren">Registreren</a>
+    <?php endif; ?>
 </nav>
-<p>hier komen alle boeken te staan</p>
+
+<h1>Beschikbare boeken</h1>
+
+<ul>
+    <?php foreach ($books as $book): ?>
+    <li>
+        <strong><?= htmlspecialchars($book['title']) ?></strong>
+        door <?= htmlspecialchars($book['author'] ?? 'Onbekende auteur') ?>
+        <a href="/boek-info?id=<?= $book['id'] ?>">Details</a>
+    </li>
+    <?php endforeach; ?>
+</ul>
+
+<?php if (empty($books)): ?>
+<p>Er staan momenteel geen boeken in de database.</p>
+<?php endif; ?>
+
 </body>
 </html>

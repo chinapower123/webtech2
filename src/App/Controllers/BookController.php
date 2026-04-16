@@ -1,16 +1,25 @@
 <?php
 namespace App\Controllers;
+
+use App\Repository\BookRepository;
 use Framework\Templating\TemplateEngine;
 
 class BookController
 {
-    private TemplateEngine $templateEngine;
+    public function __construct(
+        private TemplateEngine $templateEngine,
+        private BookRepository $bookRepository
+    ) {}
 
-    public function __construct(TemplateEngine $templateEngine){
-        $this->templateEngine = $templateEngine;
-    }
-    public function index():string
+    public function index($request): string
     {
-        return $this->templateEngine->render('boeken.html');
+        $user = $request->getAttribute('user');
+
+        $books = $this->bookRepository->getAll();
+
+        return $this->templateEngine->render('Boeken.html', [
+            'books' => $books,
+            'user'  => $user
+        ]);
     }
 }

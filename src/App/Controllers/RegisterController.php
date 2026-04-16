@@ -30,6 +30,7 @@ class RegisterController{
                 exit;
             }
         }
-        return $this->templateEngine->render('Registration.html');
-    }
+        return $this->templateEngine->render('Registration.html', [
+            'user' => $request->getAttribute('user')
+        ]);    }
 }

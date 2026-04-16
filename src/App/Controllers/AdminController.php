@@ -9,8 +9,12 @@ class AdminController
     public function __construct(TemplateEngine $templateEngine){
         $this->templateEngine = $templateEngine;
     }
-    public function index():string
+    public function index(RequestInterface $request): string
     {
-        return $this->templateEngine->render('Admin.html');
+        $user = $request->getAttribute('user');
+
+        return $this->templateEngine->render('Admin.html', [
+            'user' => $user
+        ]);
     }
 }

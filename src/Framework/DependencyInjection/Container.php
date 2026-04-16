@@ -8,6 +8,7 @@ use App\Controllers\RegisterController;
 use App\Controllers\LogoutController;
 use App\Http\Session;
 use App\Repository\UserRepository;
+use App\Repository\BookRepository;
 use App\Security\Authenticator;
 use Framework\AccessControl\AuthenticatorMiddleware;
 use Framework\AccessControl\AuthorizationService;
@@ -20,7 +21,6 @@ use Framework\Templating\TemplateEngine;
 
 class Container
 {
-    //test
     public function createKernel(): Kernel
     {
         $dbPath = __DIR__ . '/../../../database.sqlite';
@@ -29,27 +29,28 @@ class Container
         $session = new Session();
 
         $userProvider = new UserRepository($connection);
+        $bookRepository = new BookRepository($connection);
 
         $templateEngine = new TemplateEngine(__DIR__ . '/../../../templates');
 
-        //Middleware
+        // Middleware
         $authService = new AuthorizationService();
         $authenticator = new Authenticator($userProvider, $session);
         $firewall = new FireWall($authService);
         $middlewares = [
-            new FirewallMiddleware($firewall),
             new AuthenticatorMiddleware($authenticator),
+            new FirewallMiddleware($firewall),
         ];
 
-        //controllers
+        // controllers
         $registerController = new RegisterController(
             $templateEngine,
             $userProvider
         );
 
-        $bookController = new BookController($templateEngine);
+        $bookController = new BookController($templateEngine, $bookRepository);
 
-        $bookInfoController = new BookInfoController($templateEngine);
+        $bookInfoController = new BookInfoController($templateEngine, $bookRepository);
 
         $loginController = new LoginController(
             $templateEngine,
@@ -62,15 +63,13 @@ class Container
         $routes = [
             '/' => function($request) use ($templateEngine) {
                 $user = $request->getAttribute('user');
-
-                // We geven de user mee als array aan de template
                 return $templateEngine->render('Home.html', [
                     'user' => $user
                 ]);
             },
 
             '/boeken'      => [$bookController, 'index'],
-            '/boek-info' => [$bookInfoController, 'index'],
+            '/boek-info'   => [$bookInfoController, 'index'],
             '/login'       => $loginController,
             '/registreren' => $registerController,
             '/logout'      => $logoutController,

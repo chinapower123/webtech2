@@ -1,19 +1,29 @@
 <?php
 namespace App\Controllers;
-use Framework\HTTP\Request;
-use Framework\HTTP\RequestInterface;
+
+use App\Repository\BookRepository;
+use Framework\Http\RequestInterface;
 use Framework\Templating\TemplateEngine;
 
 class BookInfoController
 {
-    private TemplateEngine $templateEngine;
+    public function __construct(
+        private TemplateEngine $templateEngine,
+        private BookRepository $bookRepository
+    ) {}
 
-    public function __construct(TemplateEngine $templateEngine){
-        $this->templateEngine = $templateEngine;
-    }
-    public function index(RequestInterface $request):string
+    public function index(RequestInterface $request): string
     {
-        $id = $request->getQueryParams()['id'] ?? null;
-        return $this->templateEngine->render('BookInfo.html', ['id' => $id] );
+        $user = $request->getAttribute('user');
+
+        $id = (int)($request->getQueryParams()['id'] ?? 0);
+
+        $book = $this->bookRepository->get($id);
+
+        return $this->templateEngine->render('BookInfo.html', [
+            'id'   => $id,
+            'book' => $book,
+            'user' => $user
+        ]);
     }
 }

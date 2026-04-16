@@ -20,6 +20,7 @@ use Framework\Templating\TemplateEngine;
 
 class Container
 {
+    //test
     public function createKernel(): Kernel
     {
         $dbPath = __DIR__ . '/../../../database.sqlite';

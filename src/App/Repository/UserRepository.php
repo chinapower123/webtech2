@@ -20,10 +20,11 @@ class UserRepository implements UserProviderInterface
 
         if (count($rows) > 0) {
             $data = $rows[0];
-            return new User($data['username'], $data['password'], false);
+            $roles = json_decode($data['roles'], true) ?: ['user'];
+            return new User($data['username'], $data['password'], $roles, false);
         }
 
-        return new User('', '', true);
+        return new User('', '', [], true);
     }
 
     public function create(string $username, string $password): void

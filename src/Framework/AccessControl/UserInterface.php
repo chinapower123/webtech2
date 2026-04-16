@@ -20,6 +20,12 @@ interface UserInterface
     function getPasswordHash(): string;
 
     /**
+     * Get the user's roles.
+     * @return array<string>
+     */
+    function getRoles(): array;
+
+    /**
      * Get whether the user is an anonymous user, as opposed to a logged in user.
      * @return bool
      */

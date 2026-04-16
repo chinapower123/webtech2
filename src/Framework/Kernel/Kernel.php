@@ -3,6 +3,8 @@
 namespace Framework\Kernel;
 
 use Framework\AccessControl\AuthenticationInterface;
+use Framework\AccessControl\FireWall;
+use Framework\AccessControl\FirewallInterface;
 use Framework\Http\RequestInterface;
 use Framework\Http\Response;
 use Framework\Http\ResponseInterface;
@@ -11,24 +13,25 @@ use Framework\Routing\RouterInterface;
 class Kernel implements KernelInterface
 {
     private RouterInterface $router;
-    private AuthenticationInterface $authentication;
-
-    public function __construct(RouterInterface $router, AuthenticationInterface $authentication)
+    private int $count = 0;
+    private array $middlewares;
+    public function __construct(RouterInterface $router, array $middlewares)
     {
         $this->router = $router;
-        $this->authentication = $authentication;
+        $this->middlewares = $middlewares;
     }
 
     public function handle(RequestInterface $request): ResponseInterface
     {
-        $user = $this->authentication->authenticate($request);
+        if ($this->count >= count($this->middlewares)) {
+            $controller = $this->router->route($request);
+            $body = $controller($request);
+            return new Response(200, '1.1', [], $body);
+        }
 
-        $request = $request->withAttribute('user', $user);
+        $middleware = $this->middlewares[$this->count];
+        $this->count++;
 
-        $controller = $this->router->route($request);
-
-        $body = $controller($request);
-
-        return new Response(200, '1.1', [], $body);
+        return $middleware->process($request, $this);
     }
 }

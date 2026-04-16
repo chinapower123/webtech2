@@ -9,11 +9,14 @@ use App\Controllers\LogoutController;
 use App\Http\Session;
 use App\Repository\UserRepository;
 use App\Security\Authenticator;
+use Framework\AccessControl\AuthenticatorMiddleware;
+use Framework\AccessControl\AuthorizationService;
+use Framework\AccessControl\FireWall;
+use Framework\AccessControl\FireWallMiddleware;
 use Framework\Database\Connection;
 use Framework\Kernel\Kernel;
 use Framework\Routing\Router;
 use Framework\Templating\TemplateEngine;
-use PDO;
 
 class Container
 {
@@ -27,7 +30,15 @@ class Container
         $userProvider = new UserRepository($connection);
 
         $templateEngine = new TemplateEngine(__DIR__ . '/../../../templates');
+
+        //Middleware
+        $authService = new AuthorizationService();
         $authenticator = new Authenticator($userProvider, $session);
+        $firewall = new FireWall($authService);
+        $middlewares = [
+            new FirewallMiddleware($firewall),
+            new AuthenticatorMiddleware($authenticator),
+        ];
 
         //controllers
         $registerController = new RegisterController(
@@ -65,6 +76,6 @@ class Container
         ];
 
         $router = new Router($routes);
-        return new Kernel($router, $authenticator);
+        return new Kernel($router, $middlewares);
     }
 }

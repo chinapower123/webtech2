@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Repository\BookRepository;
+use Framework\HTTP\RequestInterface;
 use Framework\Templating\TemplateEngine;
 
 class BookController
@@ -11,11 +12,17 @@ class BookController
         private BookRepository $bookRepository
     ) {}
 
-    public function index($request): string
+    public function index(RequestInterface $request): string
     {
         $user = $request->getAttribute('user');
+        $genre = $request->getQueryParams()['genre'] ?? null;
 
-        $books = $this->bookRepository->getAll();
+        if($genre){
+            $genre = ucfirst($genre);
+            $books = $this->bookRepository->findGenre($genre);
+        }else{
+            $books = $this->bookRepository->getAll();
+        }
 
         return $this->templateEngine->render('Boeken.html', [
             'books' => $books,

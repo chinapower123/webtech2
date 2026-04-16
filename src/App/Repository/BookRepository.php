@@ -32,4 +32,14 @@ class BookRepository implements RepositoryInterface
     // De rest van de methodes (save/remove) kun je laten staan of later invullen
     public function save(object $object): void {}
     public function remove($object): void {}
+
+    public function findGenre(mixed $genre): array
+    {
+        // We selecteren alles van books (b.*) en koppelen de genre tabel (g)
+        $sql = "SELECT * FROM books b 
+            JOIN genres g ON b.genre_id = g.id 
+            WHERE g.name = ?";
+
+        return $this->connection->query($sql, $genre);
+    }
 }

@@ -23,6 +23,17 @@ class UserRepository implements UserProviderInterface
             return new User($data['username'], $data['password'], false);
         }
 
-        return new User('', '', true); // Anoniem
+        return new User('', '', true);
+    }
+
+    public function create(string $username, string $password): void
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->connection->query(
+            "INSERT INTO users (username, password) VALUES (?, ?)",
+            $username,
+            $hashedPassword
+        );
     }
 }

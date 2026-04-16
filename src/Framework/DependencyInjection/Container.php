@@ -5,6 +5,7 @@ use App\Controllers\BookController;
 use App\Controllers\BookInfoController;
 use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
+use App\Controllers\LogoutController;
 use App\Http\Session;
 use App\Repository\UserRepository;
 use App\Security\Authenticator;
@@ -29,14 +30,22 @@ class Container
         $authenticator = new Authenticator($userProvider, $session);
 
         //controllers
-        $registerController = new RegisterController($templateEngine);
+        $registerController = new RegisterController(
+            $templateEngine,
+            $userProvider
+        );
+
         $bookController = new BookController($templateEngine);
+
         $bookInfoController = new BookInfoController($templateEngine);
+
         $loginController = new LoginController(
             $templateEngine,
             $userProvider,
             $session
         );
+
+        $logoutController = new LogoutController($session);
 
         $routes = [
             '/' => function($request) use ($templateEngine) {
@@ -51,7 +60,8 @@ class Container
             '/boeken'      => [$bookController, 'index'],
             '/boek-info' => [$bookInfoController, 'index'],
             '/login'       => $loginController,
-            '/registreren' => [$registerController, 'index'],
+            '/registreren' => $registerController,
+            '/logout'      => $logoutController,
         ];
 
         $router = new Router($routes);

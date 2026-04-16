@@ -11,6 +11,12 @@
     <a href="/login">Inloggen</a>
     <a href="/registreren">Registreren</a>
 </nav>
-<p>hier komt de registration page</p>
+<form action="/registreren" method="POST">
+    <h1>Registreren</h1>
+    <label>Gebruikersnaam: <input type="text" name="username" required></label><br>
+    <label>Wachtwoord: <input type="password" name="password" required></label><br>
+    <label>Herhaal wachtwoord: <input type="password" name="password_confirm" required></label><br>
+    <button type="submit">Account aanmaken</button>
+</form>
 </body>
 </html>

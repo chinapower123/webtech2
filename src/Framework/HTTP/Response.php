@@ -5,8 +5,11 @@ namespace Framework\Http;
 use AllowDynamicProperties;
 
 #[AllowDynamicProperties]
-class Response implements ResponseInterface{
+class Response implements ResponseInterface
+{
     private string $body;
+    private array $headers;
+    private string $protocol_version;
 
     public function __construct(
         private int $status_code = 200,
@@ -17,42 +20,24 @@ class Response implements ResponseInterface{
         $this->body = $body ?? '';
         $this->headers = $headers;
         $this->protocol_version = $protocol_version;
-        $this->status_code = 200;
+        $this->status_code = $status_code;
     }
 
-    function getHeaders(): array
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    function hasHeader(string $name): bool
-    {
-        // TODO: Implement hasHeader() method.
-    }
-
-    function getHeader(string $name): string
-    {
-        // TODO: Implement getHeader() method.
-    }
-
-    function withHeader(string $name, string $value): static
-    {
-        // TODO: Implement withHeader() method.
-    }
-
-    function withoutHeader(string $name): static
-    {
-        // TODO: Implement withoutHeader() method.
-    }
-
-    function getStatusCode(): int
+    public function getStatusCode(): int
     {
         return $this->status_code;
     }
 
     public function withStatusCode(int $code): static
     {
-        // TODO: Implement withStatusCode() method.
+        $clone = clone $this;
+        $clone->status_code = $code;
+        return $clone;
     }
 
     public function getBody(): string
@@ -62,6 +47,32 @@ class Response implements ResponseInterface{
 
     public function withBody(string $body): static
     {
-        // TODO: Implement withBody() method.
+        $clone = clone $this;
+        $clone->body = $body;
+        return $clone;
+    }
+
+    public function withHeader(string $name, string $value): static
+    {
+        $clone = clone $this;
+        $clone->headers[$name] = $value;
+        return $clone;
+    }
+
+    public function hasHeader(string $name): bool
+    {
+        return isset($this->headers[$name]);
+    }
+
+    public function getHeader(string $name): string
+    {
+        return $this->headers[$name] ?? '';
+    }
+
+    public function withoutHeader(string $name): static
+    {
+        $clone = clone $this;
+        unset($clone->headers[$name]);
+        return $clone;
     }
 }

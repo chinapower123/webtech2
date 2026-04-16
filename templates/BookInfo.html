@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>BookInfo</title>
+    <title><?= htmlspecialchars($book->title) ?> - De Biep</title>
 </head>
 <body>
 <nav>
     <a href="/">De Biep</a>
-    <a href="/boeken">Boeken</a>
-    <a href="/login">Inloggen</a>
-    <a href="/registreren">Registreren</a>
+    <a href="/boeken">Terug naar overzicht</a>
+
+    <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+    <?php endif; ?>
 </nav>
 
-<p>hier komt de info</p>
+<hr>
+
+<h1><?= htmlspecialchars($book->title) ?></h1>
+<h3>Door: <?= htmlspecialchars($book->author) ?></h3>
+
+<div class="description">
+    <h4>Beschrijving:</h4>
+    <p><?= nl2br(htmlspecialchars($book->description ?? 'Geen beschrijving beschikbaar.')) ?></p>
+</div>
+
+<p><em>Genre ID: <?= (int)$book->genre_id ?></em></p>
+
+<hr>
+<a href="/boeken">&laquo; Terug naar alle boeken</a>
 
 </body>
 </html>

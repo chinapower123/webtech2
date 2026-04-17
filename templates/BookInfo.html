@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($book->title) ?> - De Biep</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <nav>
@@ -24,10 +25,21 @@
     <p><?= nl2br(htmlspecialchars($book->description ?? 'Geen beschrijving beschikbaar.')) ?></p>
 </div>
 
-<p><em>Genre ID: <?= (int)$book->genre_id ?></em></p>
+<p><em>Genre: <?= htmlspecialchars($book->genre_name) ?></em></p>
 
 <hr>
-<a href="/boeken">&laquo; Terug naar alle boeken</a>
 
+<footer>
+    <div class="footer-content">
+        <h3>De Biep</h3>
+        <p>Jouw online bibliotheek voor de leukste boeken.</p>
+
+
+        <div class="copyright">
+            &copy; <?= date('Y') ?> De Biep
+        </div>
+    </div>
+
+</footer>
 </body>
 </html>

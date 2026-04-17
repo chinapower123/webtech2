@@ -24,6 +24,18 @@ class BookRepository implements RepositoryInterface
         return (object) $rows[0];
     }
 
+    public function update(object $book): void
+    {
+        $this->connection->execute(
+            "UPDATE books SET title = ?, author = ?, description = ?, genre_id = ? WHERE id = ?",
+            $book->title,
+            $book->author,
+            $book->description,
+            $book->genre_id,
+            $book->id
+        );
+    }
+
     public function save(object $book): void
     {
         $this->connection->query(
@@ -51,5 +63,21 @@ class BookRepository implements RepositoryInterface
             WHERE g.name = ?";
 
         return $this->connection->query($sql, $genre);
+    }
+
+    public function getGenre(mixed $genre): array
+    {
+        $sql = "SELECT books.*, genres.name as genre_name 
+         FROM books 
+         JOIN genres ON books.genre_id = genres.id 
+         WHERE books.id = ?";
+
+        return $this->connection->query($sql, $genre);
+    }
+
+    public function getAllGenreNames(): array
+    {
+        $sql = "SELECT * FROM genres ORDER BY name";
+        return $this->connection->query($sql);
     }
 }

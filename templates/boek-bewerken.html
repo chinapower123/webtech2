@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Boek Bewerken</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<main class="container">
+    <h1>Boek Bewerken</h1>
+
+    <div class="form-container">
+        <form action="/boek-bewerken-verwerken" method="POST">
+            <input type="hidden" name="id" value="<?= $book->id ?>">
+
+            <div class="form-group">
+                <label for="title">Titel van het boek</label>
+                <input type="text" id="title" name="title"
+                       value="<?= htmlspecialchars($book->title) ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="author">Auteur</label>
+                <input type="text" id="author" name="author"
+                       value="<?= htmlspecialchars($book->author ?? '') ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Omschrijving</label>
+                <textarea id="description" name="description" rows="5" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ddd;"><?= htmlspecialchars($book->description ?? '') ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="genre_id">Genre</label>
+                <select id="genre_id" name="genre_id">
+                    <?php foreach ($genres as $genre): ?>
+                    <option value="<?= $genre['id'] ?>">
+                        <?php if ($genre['id'] == $book->genre_id) echo 'SELECTED'; ?>
+                    <?= htmlspecialchars($genre['name']) ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+
+
+            <div class="form-actions" style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="submit" class="btn-details" style="border: none; cursor: pointer; flex: 2;">
+                    Wijzigingen Opslaan
+                </button>
+                <a href="/boeken" class="btn-outline" style="flex: 1; text-align: center; padding: 10px; border: 1px solid #ccc; text-decoration: none; color: #666; border-radius: 6px;">
+                    Annuleren
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+</footer>
+
+</body>
+</html>

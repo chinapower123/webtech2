@@ -1,7 +1,9 @@
 <?php
 namespace Framework\DependencyInjection;
 
+use App\Controllers\AdminController;
 use App\Controllers\BookController;
+use App\Controllers\BookEditController;
 use App\Controllers\BookInfoController;
 use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
@@ -42,15 +44,18 @@ class Container
             new FirewallMiddleware($firewall),
         ];
 
-        // controllers
+        // Boek-controllers
+        $bookController = new BookController($templateEngine, $bookRepository);
+        $bookInfoController = new BookInfoController($templateEngine, $bookRepository);
+        $bookEditController = new BookEditController($templateEngine, $bookRepository);
+
+        $adminController = new AdminController($templateEngine);
+
+        //registratie-controllers
         $registerController = new RegisterController(
             $templateEngine,
             $userProvider
         );
-
-        $bookController = new BookController($templateEngine, $bookRepository);
-
-        $bookInfoController = new BookInfoController($templateEngine, $bookRepository);
 
         $loginController = new LoginController(
             $templateEngine,
@@ -60,6 +65,7 @@ class Container
 
         $logoutController = new LogoutController($session);
 
+        //routes
         $routes = [
             '/' => function($request) use ($templateEngine) {
                 $user = $request->getAttribute('user');
@@ -68,11 +74,21 @@ class Container
                 ]);
             },
 
+            //boeken
             '/boeken'      => [$bookController, 'index'],
             '/boek-info'   => [$bookInfoController, 'index'],
+            '/boek-bewerken'   => [$bookEditController, 'edit'],
+            '/boek-bewerken-verwerken'   => [$bookEditController, 'update'],
+
+            //registratie
             '/login'       => $loginController,
             '/registreren' => $registerController,
             '/logout'      => $logoutController,
+
+            //admin
+            '/admin'      => [$adminController, 'index'],
+
+
         ];
 
         $router = new Router($routes);

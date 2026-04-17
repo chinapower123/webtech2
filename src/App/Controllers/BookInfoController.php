@@ -15,15 +15,14 @@ class BookInfoController
     public function index(RequestInterface $request): string
     {
         $user = $request->getAttribute('user');
-
         $id = (int)($request->getQueryParams()['id'] ?? 0);
-
-        $book = $this->bookRepository->get($id);
+        $rows = $this->bookRepository->getGenre($id);
+        $book = (object) $rows[0];
 
         return $this->templateEngine->render('BookInfo.html', [
             'id'   => $id,
             'book' => $book,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 }

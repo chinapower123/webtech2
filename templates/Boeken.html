@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Boeken overzicht</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <nav>
@@ -10,6 +11,7 @@
     <a href="/boeken">Boeken</a>
 
     <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <a href="/admin">Admin</a>
     <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
     <a href="/logout">Uitloggen</a>
     <?php else: ?>
@@ -18,21 +20,40 @@
     <?php endif; ?>
 </nav>
 
-<h1>Beschikbare boeken</h1>
+<main class="container">
+    <h1>Beschikbare boeken</h1>
 
-<ul>
-    <?php foreach ($books as $book): ?>
-    <li>
-        <strong><?= htmlspecialchars($book['title']) ?></strong>
-        door <?= htmlspecialchars($book['author'] ?? 'Onbekende auteur') ?>
-        <a href="/boek-info?id=<?= $book['id'] ?>">Details</a>
-    </li>
-    <?php endforeach; ?>
-</ul>
+    <div class="book-grid">
+        <?php foreach ($books as $book): ?>
+        <div class="book-card">
+            <div class="book-info">
+                <h3><?= htmlspecialchars($book['title']) ?></h3>
+                <p class="author">door <?= htmlspecialchars($book['author'] ?? 'Onbekende auteur') ?></p>
+            </div>
+            <div class="book-actions">
+                <a href="/boek-info?id=<?= $book['id'] ?>" class="btn-details">Bekijk Details</a>
+                <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+                <a href="/boek-bewerken?id=<?= $book['id'] ?>" class="btn-edit">Bewerken</a>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
 
-<?php if (empty($books)): ?>
-<p>Er staan momenteel geen boeken in de database.</p>
-<?php endif; ?>
+    <?php if (empty($books)): ?>
+    <p class="empty-message">Er staan momenteel geen boeken in de database.</p>
+    <?php endif; ?>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <h3>De Biep</h3>
+        <p>Jouw online bibliotheek voor de leukste boeken.</p>
+        <div class="copyright">
+            &copy; <?= date('Y') ?> De Biep
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>

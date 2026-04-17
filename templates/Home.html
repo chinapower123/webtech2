@@ -2,15 +2,16 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Boeken overzicht</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
 <nav>
     <a href="/">De Biep</a>
     <a href="/boeken">Boeken</a>
 
     <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <a href="/admin">Admin</a>
     <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
     <a href="/logout">Uitloggen</a>
     <?php else: ?>
@@ -48,6 +49,19 @@
     <li><a href="/boek-info?id=3">Titel van het boek — Auteur (sterren)</a></li>
     <li><a href="/boek-info?id=4">Titel van het boek — Auteur (sterren)</a></li>
 </ul>
+
+<footer>
+    <div class="footer-content">
+        <h3>De Biep</h3>
+        <p>Jouw online bibliotheek voor de leukste boeken.</p>
+
+
+        <div class="copyright">
+            &copy; <?= date('Y') ?> De Biep
+        </div>
+    </div>
+
+</footer>
 
 </body>
 </html>

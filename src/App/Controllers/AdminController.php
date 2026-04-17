@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use Framework\HTTP\RequestInterface;
 use Framework\Templating\TemplateEngine;
 
 class AdminController
@@ -16,5 +17,6 @@ class AdminController
         return $this->templateEngine->render('Admin.html', [
             'user' => $user
         ]);
+
     }
 }

@@ -6,10 +6,14 @@
 </head>
 <body>
 <nav>
-    <a href="/">De Biep</a>
-    <a href="/boeken">Boeken</a>
+    <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+    <a href="/logout">Uitloggen</a>
+    <a href="/admin">Admin</a>
+    <?php else: ?>
     <a href="/login">Inloggen</a>
     <a href="/registreren">Registreren</a>
+    <?php endif; ?>
 </nav>
 <?php if (isset($error) && $error): ?>
 <div style="color: white; background-color: #e74c3c; padding: 10px; margin-bottom: 15px; border-radius: 5px;">

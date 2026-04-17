@@ -20,7 +20,7 @@ class UserRepository implements UserProviderInterface
 
         if (count($rows) > 0) {
             $data = $rows[0];
-            $roles = json_decode($data['roles'], true) ?: ['user'];
+            $roles = isset($data['role']) ? [$data['role']] : ['user'];
             return new User($data['username'], $data['password'], $roles, false);
         }
 

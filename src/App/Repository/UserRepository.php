@@ -21,10 +21,16 @@ class UserRepository implements UserProviderInterface
         if (count($rows) > 0) {
             $data = $rows[0];
             $roles = isset($data['role']) ? [$data['role']] : ['user'];
-            return new User($data['username'], $data['password'], $roles, false);
-        }
 
-        return new User('', '', [], true);
+            return new User(
+                (int)$data['id'],
+                $data['username'],
+                $data['password'],
+                $roles,
+                false
+            );
+        }
+        return new User(null, '', '', [], true);
     }
 
     public function create(string $username, string $password): void

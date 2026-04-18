@@ -28,6 +28,34 @@
 <p><em>Genre: <?= htmlspecialchars($book->genre_name) ?></em></p>
 
 <hr>
+<h3>Reviews</h3>
+<?php foreach ($reviews as $review): ?>
+<div style="border-bottom: 1px solid #ccc; margin-bottom: 10px;">
+    <strong><?= htmlspecialchars($review['username']) ?></strong> gaf <?= (int)$review['score'] ?>/5 sterren
+    <p><?= nl2br(htmlspecialchars($review['text'])) ?></p>
+</div>
+<?php endforeach; ?>
+
+<?php if (empty($reviews)): ?>
+<p>Er zijn nog geen reviews voor dit boek.</p>
+<?php endif; ?>
+
+<?php if ($user && !$user->isAnonymous()): ?>
+<hr>
+<h4>Schrijf een review</h4>
+<form method="POST">
+    <label>Score (1-5):</label>
+    <select name="score">
+        <option value="5">5 Sterren</option>
+        <option value="4">4 Sterren</option>
+        <option value="3">3 Sterren</option>
+        <option value="2">2 Sterren</option>
+        <option value="1">1 Ster</option>
+    </select><br><br>
+    <textarea name="review_text" placeholder="Wat vond je van het boek?" style="width:100%; height:60px;" required></textarea><br>
+    <button type="submit">Verstuur Review</button>
+</form>
+<?php endif; ?>
 
 <footer>
     <div class="footer-content">

@@ -1,15 +1,21 @@
 <?php
 namespace Framework\Database;
 use PDO;
+
 class Connection implements ConnectionInterface {
     private PDO $pdo;
+
     public function __construct(string $file) {
         if(!file_exists($file)){
             throw new \Exception("Bestand bestaat niet");
-        }else{
-            $this->pdo = new PDO("sqlite:$file");
+        } else {
+            $this->pdo = new PDO("sqlite:$file", null, null, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]);
         }
     }
+
     function query(string $query, ...$params): array
     {
         $stmt = $this->pdo->prepare($query);
@@ -26,6 +32,6 @@ class Connection implements ConnectionInterface {
 
     function getLastInsertId(): int
     {
-        return $this->pdo->lastInsertId();
+        return (int)$this->pdo->lastInsertId();
     }
 }

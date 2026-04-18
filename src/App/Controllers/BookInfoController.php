@@ -16,13 +16,39 @@ class BookInfoController
     {
         $user = $request->getAttribute('user');
         $id = (int)($request->getQueryParams()['id'] ?? 0);
+
+        if ($request->getMethod() === 'POST' && $user && !$user->isAnonymous()) {
+            $score = (int)$request->getPostData('score');
+            $text = $request->getPostData('review_text');
+
+            $userId = null;
+            if (method_exists($user, 'getId')) {
+                $userId = $user->getId();
+            } elseif (isset($user->id)) {
+                $userId = $user->id;
+            }
+
+            if (!$userId && method_exists($user, 'getAttributes')) {
+                $userId = $user->getAttributes()['id'] ?? null;
+            }
+
+            $this->bookRepository->addReview($id, (int)$userId, $score, $text);
+
+            header("Location: /boek-info?id=$id");
+            exit;
+        }
+
         $rows = $this->bookRepository->getGenre($id);
-        $book = (object) $rows[0];
+
+        $book = !empty($rows) ? (object) $rows[0] : new \stdClass();
+
+        $reviews = $this->bookRepository->getReviewsByBook($id);
 
         return $this->templateEngine->render('BookInfo.html', [
-            'id'   => $id,
-            'book' => $book,
-            'user' => $user,
+            'id'      => $id,
+            'book'    => $book,
+            'user'    => $user,
+            'reviews' => $reviews
         ]);
     }
 }

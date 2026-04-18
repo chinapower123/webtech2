@@ -30,9 +30,22 @@
 <hr>
 <h3>Reviews</h3>
 <?php foreach ($reviews as $review): ?>
-<div style="border-bottom: 1px solid #ccc; margin-bottom: 10px;">
-    <strong><?= htmlspecialchars($review['username']) ?></strong> gaf <?= (int)$review['score'] ?>/5 sterren
-    <p><?= nl2br(htmlspecialchars($review['text'])) ?></p>
+<div style="border-bottom: 1px solid #ccc; margin-bottom: 10px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+        <strong><?= htmlspecialchars($review->username) ?></strong> gaf <?= (int)$review->score ?>/5 sterren
+        <p style="margin-top: 5px;"><?= nl2br(htmlspecialchars($review->text)) ?></p>
+    </div>
+
+    <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+    <div class="admin-actions">
+        <a href="/review-verwijderen?id=<?= $review->id ?>&book_id=<?= $book->id ?>"
+           style="color: #e74c3c; text-decoration: none; font-size: 0.8rem; border: 1px solid #e74c3c; padding: 3px 8px; border-radius: 4px;"
+           onclick="return confirm('Weet je zeker dat je deze review wilt verwijderen?')">
+            Verwijderen
+        </a>
+    </div>
+    <?php endif; ?>
+
 </div>
 <?php endforeach; ?>
 
@@ -45,14 +58,18 @@
 <h4>Schrijf een review</h4>
 <form method="POST">
     <label>Score (1-5):</label>
-    <select name="score">
-        <option value="5">5 Sterren</option>
-        <option value="4">4 Sterren</option>
-        <option value="3">3 Sterren</option>
-        <option value="2">2 Sterren</option>
-        <option value="1">1 Ster</option>
-    </select><br><br>
-    <textarea name="review_text" placeholder="Wat vond je van het boek?" style="width:100%; height:60px;" required></textarea><br>
+    <label>
+        <select name="score">
+            <option value="5">5 Sterren</option>
+            <option value="4">4 Sterren</option>
+            <option value="3">3 Sterren</option>
+            <option value="2">2 Sterren</option>
+            <option value="1">1 Ster</option>
+        </select>
+    </label><br><br>
+    <label>
+        <textarea name="review_text" placeholder="Wat vond je van het boek?" style="width:100%; height:60px;" required></textarea>
+    </label><br>
     <button type="submit">Verstuur Review</button>
 </form>
 <?php endif; ?>

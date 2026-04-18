@@ -16,9 +16,23 @@ class Firewall implements FirewallInterface
     public function accepts(RequestInterface $request, UserInterface $user): bool
     {
         $path = $request->getUri()->getPath();
-
-        if (str_starts_with($path, '/admin')) {
-            return $this->authorizationService->isGranted($user, 'admin');
+        $protectedPaths = [
+            'admin',
+            'boek-toevoegen',
+            'boek-toevoegen-verwerken',
+            'boek-bewerken-verwerken',
+            'genre-toevoegen-verwerken',
+            'genre-toevoegen',
+            'boek-bewerken',
+            'genre-verwijderen',
+            'boek-verwijderen',
+            'genre-beheer',
+            'review-verwijderen'
+        ];
+        foreach ($protectedPaths as $protectedPath) {
+            if (str_starts_with($path, '/' . $protectedPath)) {
+                return $this->authorizationService->isGranted($user, 'admin');
+            }
         }
         return true;
     }

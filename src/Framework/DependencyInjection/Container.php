@@ -9,6 +9,7 @@ use App\Controllers\GenreController;
 use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
 use App\Controllers\LogoutController;
+use App\Controllers\ReviewController;
 use App\Entity\Book;
 use App\Entity\Genre;
 use App\Entity\Review;
@@ -69,6 +70,9 @@ class Container
         //admin-controllers
         $adminController = new AdminController($templateEngine);
 
+        //review
+        $reviewController = new ReviewController($reviewRepository);
+
         //genre-controllers
         $genreController = new GenreController($templateEngine, $genreRepository);
 
@@ -109,6 +113,9 @@ class Container
             '/genre-toevoegen'   => [$genreController, 'create'],
             '/genre-toevoegen-verwerken'   => [$genreController, 'store'],
             '/genre-verwijderen'   => [$genreController, 'delete'],
+
+            //reviews
+            '/review-verwijderen'   => [$reviewController, 'delete'],
 
 
             //registratie

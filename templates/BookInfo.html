@@ -6,13 +6,27 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<nav>
-    <a href="/">De Biep</a>
-    <a href="/boeken">Terug naar overzicht</a>
+<nav class="navbar">
+    <div class="nav-section-left">
+        <a href="/" class="nav-logo">De Biep</a>
+    </div>
 
-    <?php if (isset($user) && !$user->isAnonymous()): ?>
-    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
-    <?php endif; ?>
+    <div class="nav-section-center">
+        <a href="/boeken">Boeken</a>
+        <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+        <a href="/admin">Admin</a>
+        <?php endif; ?>
+    </div>
+
+    <div class="nav-section-right">
+        <?php if (isset($user) && !$user->isAnonymous()): ?>
+        <span class="nav-welcome">Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+        <a href="/logout" class="btn-logout">Uitloggen</a>
+        <?php else: ?>
+        <a href="/login">Inloggen</a>
+        <a href="/registreren">Registreren</a>
+        <?php endif; ?>
+    </div>
 </nav>
 
 <hr>

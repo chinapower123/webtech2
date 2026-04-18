@@ -66,18 +66,27 @@
 </head>
 <body>
 
-<nav>
-    <a href="/">De Biep</a>
-    <a href="/boeken">Boeken</a>
+<nav class="navbar">
+    <div class="nav-section-left">
+        <a href="/" class="nav-logo">De Biep</a>
+    </div>
 
-    <?php if (isset($user) && !$user->isAnonymous()): ?>
-    <a href="/admin">Admin</a>
-    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
-    <a href="/logout">Uitloggen</a>
-    <?php else: ?>
-    <a href="/login">Inloggen</a>
-    <a href="/registreren">Registreren</a>
-    <?php endif; ?>
+    <div class="nav-section-center">
+        <a href="/boeken">Boeken</a>
+        <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+        <a href="/admin">Admin</a>
+        <?php endif; ?>
+    </div>
+
+    <div class="nav-section-right">
+        <?php if (isset($user) && !$user->isAnonymous()): ?>
+        <span class="nav-welcome">Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+        <a href="/logout" class="btn-logout">Uitloggen</a>
+        <?php else: ?>
+        <a href="/login">Inloggen</a>
+        <a href="/registreren">Registreren</a>
+        <?php endif; ?>
+    </div>
 </nav>
 
 <main class="container">
@@ -100,6 +109,24 @@
     </section>
 
     <h2 class="section-title">Populaire boeken</h2>
+
+    <div class="book-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+        <?php
+    $booksToShow = isset($books) && is_array($books) ? array_slice($books, 0, 5) : [];
+    ?>
+
+        <?php foreach ($booksToShow as $book): ?>
+        <div class="book-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: white;">
+            <h3 style="margin-top: 0;"><?= htmlspecialchars($book->title) ?></h3>
+            <p>Door: <?= htmlspecialchars($book->author) ?></p>
+            <a href="/boek-info?id=<?= $book->id ?>" class="genre-link" style="display: inline-block; background: #3498db; color: white; text-align: center;">Bekijk details</a>
+        </div>
+        <?php endforeach; ?>
+
+        <?php if (empty($booksToShow)): ?>
+        <p>Geen boeken gevonden.</p>
+        <?php endif; ?>
+    </div>
 
 </main>
 

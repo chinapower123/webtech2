@@ -6,6 +6,7 @@ use App\Controllers\BookController;
 use App\Controllers\BookEditController;
 use App\Controllers\BookInfoController;
 use App\Controllers\GenreController;
+use App\Controllers\HomeController;
 use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
 use App\Controllers\LogoutController;
@@ -29,6 +30,7 @@ use Framework\Database\IdentityMap;
 use Framework\Kernel\Kernel;
 use Framework\Routing\Router;
 use Framework\Templating\TemplateEngine;
+use Symfony\Component\DependencyInjection\Tests\Compiler\H;
 
 class Container
 {
@@ -62,6 +64,9 @@ class Container
             new FirewallMiddleware($firewall),
         ];
 
+        //Home-controller
+        $homeController = new HomeController($templateEngine, $bookRepository);
+
         // Boek-controllers
         $bookController = new BookController($templateEngine, $bookRepository);
         $bookInfoController = new BookInfoController($templateEngine, $bookRepository, $reviewRepository);
@@ -92,12 +97,7 @@ class Container
 
         //routes
         $routes = [
-            '/' => function($request) use ($templateEngine) {
-                $user = $request->getAttribute('user');
-                return $templateEngine->render('Home.html', [
-                    'user' => $user
-                ]);
-            },
+            '/' => [$homeController, 'home'],
 
             //boeken
             '/boeken'      => [$bookController, 'index'],

@@ -42,7 +42,7 @@ class BookRepository implements RepositoryInterface
     public function findGenre(mixed $genre): array
     {
         $sql = "SELECT * FROM books b 
-            JOIN genres g ON b.genre_id = g.id 
+            LEFT JOIN genres g ON b.genre_id = g.id 
             WHERE g.name = ?";
 
         return $this->dataMapper->select($sql, $genre);
@@ -52,7 +52,7 @@ class BookRepository implements RepositoryInterface
     {
         $sql = "SELECT books.*, genres.name as genre_name 
             FROM books 
-            JOIN genres ON books.genre_id = genres.id 
+            LEFT JOIN genres ON books.genre_id = genres.id 
             WHERE books.id = ?";
 
         return $this->dataMapper->select($sql, $id);

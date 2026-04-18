@@ -7,5 +7,4 @@ class Book
     public string $title;
     public string $author;
     public string $description;
-    public int $genre_id;
-}
+    public ?int $genre_id = null;}

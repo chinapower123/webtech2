@@ -16,17 +16,25 @@ class GenreRepository implements RepositoryInterface{
         return $this->dataMapper->get($id);
     }
 
+    public function update(object $object): void
+    {
+        $this->dataMapper->update($object);
+    }
+
     function save(object $object): void
     {
-        if($object->getId() !== null){
-            $this->dataMapper->insert($object);
-        } else{
-            $this->dataMapper->update($object);
-        }
+        $this->dataMapper->insert($object);
     }
 
     function remove($object): void
     {
         $this->dataMapper->delete($object);
     }
+
+    public function getAllGenreNames(): array
+    {
+        $sql = "SELECT * FROM genres ORDER BY id";
+        return $this->dataMapper->select($sql);
+    }
+
 }

@@ -2,10 +2,70 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Boeken overzicht</title>
+    <title>De Biep - Home</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .search-form {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .search-form input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .search-form button {
+            padding: 12px 25px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .genre-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .genre-link {
+            padding: 8px 16px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .genre-link:hover {
+            background: #3498db;
+            color: white;
+        }
+        .section-title {
+            margin: 40px 0 20px;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
+
 <nav>
     <a href="/">De Biep</a>
     <a href="/boeken">Boeken</a>
@@ -20,47 +80,37 @@
     <?php endif; ?>
 </nav>
 
-<hr>
+<main class="container">
+    <section class="search-section">
+        <h1>Zoek en review boeken</h1>
+        <form action="/zoeken" method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Zoek op titel of auteur…" required>
+            <button type="submit">Zoeken</button>
+        </form>
 
-<h1>Zoek en review boeken</h1>
+        <div class="genre-list">
+            <span style="align-self: center; font-weight: bold; margin-right: 10px;">Genres:</span>
+            <a href="/boeken" class="genre-link">Alle</a>
+            <a href="/boeken?genre=roman" class="genre-link">Roman</a>
+            <a href="/boeken?genre=comedy" class="genre-link">Comedy</a>
+            <a href="/boeken?genre=thriller" class="genre-link">Thriller</a>
+            <a href="/boeken?genre=sciencefiction" class="genre-link">Sciencefiction</a>
+            <a href="/boeken?genre=fantasy" class="genre-link">Fantasy</a>
+        </div>
+    </section>
 
-<form action="/zoeken" method="GET">
-    <input type="text" name="q" placeholder="Zoek op titel of auteur…">
-    <button type="submit">Zoeken</button>
-</form>
+    <h2 class="section-title">Populaire boeken</h2>
 
-<br>
-
-<p>Genres:</p>
-<a href="/boeken">Alle</a> |
-<a href="/boeken?genre=roman">Roman</a> |
-<a href="/boeken?genre=comedy">Comedy</a> |
-<a href="/boeken?genre=thriller">Thriller</a> |
-<a href="/boeken?genre=sciencefiction">Sciencefiction</a> |
-<a href="/boeken?genre=fantasy">Fantasy</a> |
-
-<hr>
-
-<h2>Populaire boeken</h2>
-
-<ul>
-    <li><a href="/boek-info?id=1">Titel van het boek — Auteur (sterren)</a></li>
-    <li><a href="/boek-info?id=2">Titel van het boek — Auteur (sterren)</a></li>
-    <li><a href="/boek-info?id=3">Titel van het boek — Auteur (sterren)</a></li>
-    <li><a href="/boek-info?id=4">Titel van het boek — Auteur (sterren)</a></li>
-</ul>
+</main>
 
 <footer>
     <div class="footer-content">
         <h3>De Biep</h3>
         <p>Jouw online bibliotheek voor de leukste boeken.</p>
-
-
-        <div class="copyright">
+        <div class="copyright" style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
             &copy; <?= date('Y') ?> De Biep
         </div>
     </div>
-
 </footer>
 
 </body>

@@ -9,7 +9,7 @@ use Framework\Database\ConnectionInterface;
 
 class UserRepository implements UserProviderInterface
 {
-    private ConnectionInterface $connection; // Gebruik connection ipv pdo
+    private ConnectionInterface $connection;
 
     public function __construct(ConnectionInterface $connection) {
         $this->connection = $connection;

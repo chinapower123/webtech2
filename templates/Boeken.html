@@ -23,17 +23,36 @@
 <main class="container">
     <h1>Beschikbare boeken</h1>
 
+    <div class="admin-controls">
+        <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+        <div class="dropdown">
+            <button class="btn-add">＋ Toevoegen</button>
+            <div class="dropdown-content">
+                <a href="/boek-toevoegen">Nieuw Boek</a>
+                <a href="/genre-beheer">Genre beheer</a>
+                <hr>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+
+
     <div class="book-grid">
         <?php foreach ($books as $book): ?>
         <div class="book-card">
             <div class="book-info">
-                <h3><?= htmlspecialchars($book['title']) ?></h3>
-                <p class="author">door <?= htmlspecialchars($book['author'] ?? 'Onbekende auteur') ?></p>
+                <h3><?= htmlspecialchars($book->title) ?></h3>
+                <p class="author">door <?= htmlspecialchars($book->author?? 'Onbekende auteur') ?></p>
             </div>
             <div class="book-actions">
-                <a href="/boek-info?id=<?= $book['id'] ?>" class="btn-details">Bekijk Details</a>
+                <a href="/boek-info?id=<?= $book->id ?>" class="btn-details">Bekijk Details</a>
                 <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
-                <a href="/boek-bewerken?id=<?= $book['id'] ?>" class="btn-edit">Bewerken</a>
+                <a href="/boek-bewerken?id=<?= $book->id ?>" class="btn-edit">Bewerken</a>
+                <?php endif; ?>
+                <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+                <a href="/boek-verwijderen?id=<?= $book->id ?>"
+                   class="btn-delete"
+                   onclick="return confirm('Weet je zeker dat je dit boek wilt verwijderen?')">Verwijderen</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -49,7 +68,7 @@
     <div class="footer-content">
         <h3>De Biep</h3>
         <p>Jouw online bibliotheek voor de leukste boeken.</p>
-        <div class="copyright">
+        <div class="copyright" style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
             &copy; <?= date('Y') ?> De Biep
         </div>
     </div>

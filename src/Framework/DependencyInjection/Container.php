@@ -5,10 +5,16 @@ use App\Controllers\AdminController;
 use App\Controllers\BookController;
 use App\Controllers\BookEditController;
 use App\Controllers\BookInfoController;
+use App\Controllers\GenreController;
 use App\Controllers\LoginController;
 use App\Controllers\RegisterController;
 use App\Controllers\LogoutController;
+use App\Entity\Book;
+use App\Entity\Genre;
+use App\Entity\Review;
 use App\Http\Session;
+use App\Repository\GenreRepository;
+use App\Repository\ReviewRepository;
 use App\Repository\UserRepository;
 use App\Repository\BookRepository;
 use App\Security\Authenticator;
@@ -17,6 +23,8 @@ use Framework\AccessControl\AuthorizationService;
 use Framework\AccessControl\FireWall;
 use Framework\AccessControl\FireWallMiddleware;
 use Framework\Database\Connection;
+use Framework\Database\DataMapper;
+use Framework\Database\IdentityMap;
 use Framework\Kernel\Kernel;
 use Framework\Routing\Router;
 use Framework\Templating\TemplateEngine;
@@ -30,8 +38,17 @@ class Container
 
         $session = new Session();
 
+
+        $bookDataMapper = new DataMapper(new IdentityMap(), $connection, 'books', Book::class);
+        $genreDataMapper = new DataMapper(new IdentityMap(), $connection, 'genres', Genre::class);
+        $reviewDataMapper = new DataMapper(new IdentityMap(), $connection, 'reviews', Review::class);
+
+        $bookRepository = new BookRepository($bookDataMapper);
+        $genreRepository = new GenreRepository($genreDataMapper);
+        $reviewRepository = new ReviewRepository($reviewDataMapper);
+
+
         $userProvider = new UserRepository($connection);
-        $bookRepository = new BookRepository($connection);
 
         $templateEngine = new TemplateEngine(__DIR__ . '/../../../templates');
 
@@ -46,10 +63,14 @@ class Container
 
         // Boek-controllers
         $bookController = new BookController($templateEngine, $bookRepository);
-        $bookInfoController = new BookInfoController($templateEngine, $bookRepository);
-        $bookEditController = new BookEditController($templateEngine, $bookRepository);
+        $bookInfoController = new BookInfoController($templateEngine, $bookRepository, $reviewRepository);
+        $bookEditController = new BookEditController($templateEngine, $bookRepository, $genreRepository);
 
+        //admin-controllers
         $adminController = new AdminController($templateEngine);
+
+        //genre-controllers
+        $genreController = new GenreController($templateEngine, $genreRepository);
 
         //registratie-controllers
         $registerController = new RegisterController(
@@ -79,6 +100,16 @@ class Container
             '/boek-info'   => [$bookInfoController, 'index'],
             '/boek-bewerken'   => [$bookEditController, 'edit'],
             '/boek-bewerken-verwerken'   => [$bookEditController, 'update'],
+            '/boek-toevoegen'   => [$bookEditController, 'create'],
+            '/boek-toevoegen-verwerken'   => [$bookEditController, 'store'],
+            '/boek-verwijderen'   => [$bookEditController, 'delete'],
+
+            //genre
+            '/genre-beheer' => [$genreController, 'index'],
+            '/genre-toevoegen'   => [$genreController, 'create'],
+            '/genre-toevoegen-verwerken'   => [$genreController, 'store'],
+            '/genre-verwijderen'   => [$genreController, 'delete'],
+
 
             //registratie
             '/login'       => $loginController,

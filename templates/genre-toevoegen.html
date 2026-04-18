@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Genre Toevoegen - De Biep</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/">De Biep</a>
+    <a href="/boeken">Boeken</a>
+
+    <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <a href="/admin">Admin</a>
+    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+    <a href="/logout">Uitloggen</a>
+    <?php else: ?>
+    <a href="/login">Inloggen</a>
+    <a href="/registreren">Registreren</a>
+    <?php endif; ?>
+</nav>
+
+<main class="container">
+    <h1>Nieuw Genre Toevoegen</h1>
+
+    <div class="form-container">
+        <form action="/genre-toevoegen-verwerken" method="POST">
+            <div class="form-group">
+                <label for="name">Naam van het genre</label>
+                <input type="text" id="name" name="name" placeholder="bijv. Thriller, Fantasy, Roman..." required>
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="submit" class="btn-details" style="border: none; cursor: pointer; flex: 2;">
+                    Genre Opslaan
+                </button>
+                <a href="/genre-beheer" class="btn-outline" style="flex: 1; text-align: center; padding: 10px; border: 1px solid #ccc; text-decoration: none; color: #666; border-radius: 6px;">
+                    Annuleren
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <h3>De Biep</h3>
+        <p>Jouw online bibliotheek voor de leukste boeken.</p>
+        <div class="copyright" style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
+            &copy; <?= date('Y') ?> De Biep
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

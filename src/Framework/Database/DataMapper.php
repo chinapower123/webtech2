@@ -31,7 +31,7 @@ class DataMapper implements DataMapperInterface{
         if ($this->identityMap->has($id)) {
             return $this->identityMap->get($id);
         }else{
-            $result = $this->select("SELECT * FROM {$this->tableName} WHERE id = :id");
+            $result = $this->select("SELECT * FROM {$this->tableName} WHERE id = ?", $id);
         }
         if(empty($result)){
             throw new NotFoundException("Object with $id does not exist");

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Genre beheer</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<nav>
+    <a href="/">De Biep</a>
+    <a href="/boeken">Boeken</a>
+
+    <?php if (isset($user) && !$user->isAnonymous()): ?>
+    <a href="/admin">Admin</a>
+    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+    <a href="/logout">Uitloggen</a>
+    <?php else: ?>
+    <a href="/login">Inloggen</a>
+    <a href="/registreren">Registreren</a>
+    <?php endif; ?>
+</nav>
+
+<main class="container">
+    <h1>Genre Beheer</h1>
+
+    <div class="admin-actions">
+        <a href="/genre-toevoegen" class="btn-add">＋ Nieuw Genre Toevoegen</a>
+    </div>
+
+    <table class="admin-table" style="width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <thead>
+        <tr style="background-color: #f4f7f6; text-align: left; border-bottom: 2px solid #eee;">
+            <th style="padding: 12px 15px; font-weight: bold; color: #555; width: 50px;">ID</th>
+            <th style="padding: 12px 15px; font-weight: bold; color: #555;">Naam</th>
+            <th style="padding: 12px 15px; font-weight: bold; color: #555; text-align: right;">Acties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($genres as $genre): ?>
+        <tr style="border-bottom: 1px solid #eee; transition: background 0.2s;">
+            <td style="padding: 12px 15px; color: #888; font-family: monospace;"><?= $genre->id ?></td>
+            <td style="padding: 12px 15px; font-weight: 500; color: #333;"><?= htmlspecialchars($genre->name) ?></td>
+            <td style="padding: 12px 15px; text-align: right;">
+                <a href="/genre-verwijderen-verwerken?id=<?= $genre->id ?>"
+                   class="btn-delete-small"
+                   style="color: #e74c3c; text-decoration: none; font-size: 0.85rem; border: 1px solid #e74c3c; padding: 4px 10px; border-radius: 4px; transition: all 0.2s;"
+                   onmouseover="this.style.backgroundColor='#e74c3c'; this.style.color='white'"
+                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#e74c3c'"
+                   onclick="return confirm('Weet je zeker dat je <?= htmlspecialchars($genre->name) ?> wilt verwijderen?')">
+                    Verwijderen
+                </a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <h3>De Biep</h3>
+        <p>Jouw online bibliotheek voor de leukste boeken.</p>
+        <div class="copyright" style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
+            &copy; <?= date('Y') ?> De Biep
+        </div>
+    </div>
+</footer>

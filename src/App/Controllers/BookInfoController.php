@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Repository\BookRepository;
+use App\Repository\ReviewRepository;
 use Framework\Http\RequestInterface;
 use Framework\Templating\TemplateEngine;
 
@@ -9,7 +10,8 @@ class BookInfoController
 {
     public function __construct(
         private TemplateEngine $templateEngine,
-        private BookRepository $bookRepository
+        private BookRepository $bookRepository,
+        private ReviewRepository $reviewRepository,
     ) {}
 
     public function index(RequestInterface $request): string
@@ -32,7 +34,7 @@ class BookInfoController
                 $userId = $user->getAttributes()['id'] ?? null;
             }
 
-            $this->bookRepository->addReview($id, (int)$userId, $score, $text);
+            $this->reviewRepository->addReview($id, (int)$userId, $score, $text);
 
             header("Location: /boek-info?id=$id");
             exit;
@@ -42,7 +44,7 @@ class BookInfoController
 
         $book = !empty($rows) ? (object) $rows[0] : new \stdClass();
 
-        $reviews = $this->bookRepository->getReviewsByBook($id);
+        $reviews = $this->reviewRepository->getReviewsByBook($id);
 
         return $this->templateEngine->render('BookInfo.html', [
             'id'      => $id,

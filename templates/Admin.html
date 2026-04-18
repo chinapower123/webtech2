@@ -1,20 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Admin Paneel - De Biep</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<nav>
-    <?php if (isset($user) && !$user->isAnonymous()): ?>
-    <span>Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
-    <a href="/logout">Uitloggen</a>
-    <a href="/admin">Admin</a>
-    <?php else: ?>
-    <a href="/login">Inloggen</a>
-    <a href="/registreren">Registreren</a>
-    <?php endif; ?>
+
+<nav class="navbar">
+    <div class="nav-section-left">
+        <a href="/" class="nav-logo">De Biep</a>
+    </div>
+
+    <div class="nav-section-center">
+        <a href="/boeken">Boeken</a>
+        <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+        <a href="/admin" style="color: #3498db;">Admin</a>
+        <?php endif; ?>
+    </div>
+
+    <div class="nav-section-right">
+        <?php if (isset($user) && !$user->isAnonymous()): ?>
+        <span class="nav-welcome">Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
+        <a href="/logout" class="btn-logout" style="color: white; text-decoration: none; margin-left: 15px;">Uitloggen</a>
+        <?php endif; ?>
+    </div>
 </nav>
-<p>hier komt admin page</p>
+
+<main class="container">
+    <h1>Admin Beheer</h1>
+
+    <div class="admin-controls">
+        <a href="/boek-toevoegen" class="btn-add">+ Nieuw Boek Toevoegen</a>
+
+        <div class="dropdown" style="margin-left: 15px;">
+            <button class="btn-add" style="background-color: #3498db;">Genre Opties ▾</button>
+            <div class="dropdown-content">
+                <a href="/genre-beheer">Genres Bekijken</a>
+                <hr>
+                <a href="/genre-toevoegen">Nieuw Genre</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="book-grid">
+        <?php if (isset($books) && is_array($books)): ?>
+        <?php foreach ($books as $book): ?>
+        <div class="book-card">
+            <div>
+                <h3 style="margin: 10px 0; color: #2c3e50;"><?= htmlspecialchars($book->title) ?></h3>
+                <p style="font-style: italic; color: #555;">Door: <?= htmlspecialchars($book->author) ?></p>
+            </div>
+
+            <div class="book-actions">
+                <a href="/boek-info?id=<?= $book->id ?>" class="btn-details">Bekijken</a>
+                <a href="/boek-wijzigen?id=<?= $book->id ?>" class="btn-edit">Bewerken</a>
+                <a href="/boek-verwijderen?id=<?= $book->id ?>" class="btn-delete" onclick="return confirm('Weet je zeker dat je dit boek wilt verwijderen?')">Verwijderen</a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+        <?php else: ?>
+        <p>Er zijn nog geen boeken om te beheren.</p>
+        <?php endif; ?>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <h3>De Biep</h3>
+        <p>Beheerderspaneel - Alleen voor geautoriseerde gebruikers.</p>
+        <div class="copyright" style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
+            &copy; <?= date('Y') ?> De Biep
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>

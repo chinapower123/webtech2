@@ -73,7 +73,7 @@ class Container
         $bookEditController = new BookEditController($templateEngine, $bookRepository, $genreRepository);
 
         //admin-controllers
-        $adminController = new AdminController($templateEngine);
+        $adminController = new AdminController($templateEngine, $bookRepository);
 
         //review
         $reviewController = new ReviewController($reviewRepository);

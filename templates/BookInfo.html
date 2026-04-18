@@ -4,8 +4,67 @@
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($book->title) ?> - De Biep</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .book-detail-header {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .genre-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .review-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .review-form {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 40px;
+            border: 1px solid #ddd;
+        }
+        .review-form select, .review-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            resize: none;
+        }
+        .btn-submit {
+            background-color: #27ae60;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .star-rating {
+            color: #f1c40f;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
+
 <nav class="navbar">
     <div class="nav-section-left">
         <a href="/" class="nav-logo">De Biep</a>
@@ -21,7 +80,7 @@
     <div class="nav-section-right">
         <?php if (isset($user) && !$user->isAnonymous()): ?>
         <span class="nav-welcome">Welkom, <strong><?= htmlspecialchars($user->getUsername()) ?></strong>!</span>
-        <a href="/logout" class="btn-logout">Uitloggen</a>
+        <a href="/logout" class="btn-logout" style="color: white; text-decoration: none; margin-left: 15px;">Uitloggen</a>
         <?php else: ?>
         <a href="/login">Inloggen</a>
         <a href="/registreren">Registreren</a>
@@ -29,76 +88,97 @@
     </div>
 </nav>
 
-<hr>
+<main class="container">
+    <div class="book-detail-header">
+        <span class="genre-badge"><?= htmlspecialchars($book->genre_name ?? 'Overig') ?></span>
+        <h1 style="text-align: left; margin: 0;"><?= htmlspecialchars($book->title) ?></h1>
+        <h3 style="color: #7f8c8d; margin-bottom: 20px;">Door: <?= htmlspecialchars($book->author) ?></h3>
 
-<h1><?= htmlspecialchars($book->title) ?></h1>
-<h3>Door: <?= htmlspecialchars($book->author) ?></h3>
-
-<div class="description">
-    <h4>Beschrijving:</h4>
-    <p><?= nl2br(htmlspecialchars($book->description ?? 'Geen beschrijving beschikbaar.')) ?></p>
-</div>
-
-<p><em>Genre: <?= htmlspecialchars($book->genre_name) ?></em></p>
-
-<hr>
-<h3>Reviews</h3>
-<?php foreach ($reviews as $review): ?>
-<div style="border-bottom: 1px solid #ccc; margin-bottom: 10px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start;">
-    <div>
-        <strong><?= htmlspecialchars($review->username) ?></strong> gaf <?= (int)$review->score ?>/5 sterren
-        <p style="margin-top: 5px;"><?= nl2br(htmlspecialchars($review->text)) ?></p>
+        <div class="description">
+            <h4 style="color: #2c3e50; border-bottom: 2px solid #3498db; display: inline-block; margin-bottom: 10px;">Beschrijving</h4>
+            <p style="font-size: 1.1rem; line-height: 1.8; color: #444;">
+                <?= nl2br(htmlspecialchars($book->description ?? 'Geen beschrijving beschikbaar.')) ?>
+            </p>
+        </div>
     </div>
 
-    <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
-    <div class="admin-actions">
-        <a href="/review-verwijderen?id=<?= $review->id ?>&book_id=<?= $book->id ?>"
-           style="color: #e74c3c; text-decoration: none; font-size: 0.8rem; border: 1px solid #e74c3c; padding: 3px 8px; border-radius: 4px;"
-           onclick="return confirm('Weet je zeker dat je deze review wilt verwijderen?')">
-            Verwijderen
-        </a>
+    <h2 class="section-title">Reviews</h2>
+
+    <div class="reviews-container">
+        <?php foreach ($reviews as $review): ?>
+        <div class="review-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 1.1rem;"><?= htmlspecialchars($review->username) ?></strong>
+                    <span class="star-rating">★ <?= (int)$review->score ?>/5</span>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: -25px;">
+                    <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
+                    <a href="/review-verwijderen?id=<?= $review->id ?>&book_id=<?= $book->id ?>"
+                       class="btn-delete"
+                       style="padding: 4px 10px; font-size: 0.7rem; width: auto; flex: none; margin: 0;"
+                       onclick="return confirm('Weet je zeker dat je deze review wilt verwijderen?')">
+                        Verwijderen
+                    </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <p style="margin-top: 10px; color: #555;"><?= nl2br(htmlspecialchars($review->text)) ?></p>
+        </div>
+        <?php endforeach; ?>
+
+        <?php if (empty($reviews)): ?>
+        <p style="background: #fff; padding: 20px; border-radius: 8px; text-align: center; color: #7f8c8d;">
+            Er zijn nog geen reviews voor dit boek. Wees de eerste!
+        </p>
+        <?php endif; ?>
     </div>
+
+    <?php if ($user && !$user->isAnonymous()): ?>
+    <div class="review-form">
+        <h4 style="margin-top: 0;">Schrijf een review</h4>
+        <form method="POST">
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold;">Jouw Score:</label>
+                <select name="score">
+                    <option value="5">5 Sterren - PRACHTIG😭!</option>
+                    <option value="4">4 Sterren - Goed</option>
+                    <option value="3">3 Sterren - Gemiddeld</option>
+                    <option value="2">2 Sterren - Matig</option>
+                    <option value="1">1 Ster - Nooit meer...</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-weight: bold;">Jouw mening:</label>
+                <label for="reviewText"></label><textarea
+                        name="review_text"
+                        placeholder="Wat vond je van het verhaal?"
+                        rows="5"
+                        maxlength="250"
+                        id="reviewText"
+                        required></textarea>
+                <small id="charCount" style="color: #7f8c8d;">max 250 tekens</small>
+            </div>
+            <button type="submit" class="btn-submit">Review plaatsen</button>
+        </form>
+    </div>
+    <?php else: ?>
+    <p style="text-align: center; margin-top: 30px;">
+        <a href="/login" style="color: #3498db; font-weight: bold;">Log in</a> om een review te schrijven.
+    </p>
     <?php endif; ?>
-
-</div>
-<?php endforeach; ?>
-
-<?php if (empty($reviews)): ?>
-<p>Er zijn nog geen reviews voor dit boek.</p>
-<?php endif; ?>
-
-<?php if ($user && !$user->isAnonymous()): ?>
-<hr>
-<h4>Schrijf een review</h4>
-<form method="POST">
-    <label>Score (1-5):</label>
-    <label>
-        <select name="score">
-            <option value="5">5 Sterren</option>
-            <option value="4">4 Sterren</option>
-            <option value="3">3 Sterren</option>
-            <option value="2">2 Sterren</option>
-            <option value="1">1 Ster</option>
-        </select>
-    </label><br><br>
-    <label>
-        <textarea name="review_text" placeholder="Wat vond je van het boek?" style="width:100%; height:60px;" required></textarea>
-    </label><br>
-    <button type="submit">Verstuur Review</button>
-</form>
-<?php endif; ?>
+</main>
 
 <footer>
     <div class="footer-content">
         <h3>De Biep</h3>
         <p>Jouw online bibliotheek voor de leukste boeken.</p>
-
-
-        <div class="copyright">
+        <div class="copyright" style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
             &copy; <?= date('Y') ?> De Biep
         </div>
     </div>
-
 </footer>
+
 </body>
 </html>

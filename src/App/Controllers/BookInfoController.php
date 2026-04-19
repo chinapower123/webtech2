@@ -17,37 +17,43 @@ class BookInfoController
     public function index(RequestInterface $request): string
     {
         $user = $request->getAttribute('user');
-        $id = (int)($request->getQueryParams()['id'] ?? 0);
+        $bookId = (int)($request->getQueryParams()['id'] ?? 0);
 
+        $deleteId = $request->getQueryParams()['delete_review'] ?? null;
+        if ($deleteId && $user && !$user->isAnonymous()) {
+            $review = $this->reviewRepository->getById((int)$deleteId);
+
+            if ($review && ($review->user_id == $user->getId() || in_array('admin', $user->getRoles()))) {
+                $this->reviewRepository->remove($review);
+                header("Location: /boek-info?id=$bookId");
+                exit;
+            }
+        }
         if ($request->getMethod() === 'POST' && $user && !$user->isAnonymous()) {
             $score = (int)$request->getPostData('score');
             $text = $request->getPostData('review_text');
+            $reviewId = $request->getPostData('review_id');
+            $userId = $user->getId();
 
-            $userId = null;
-            if (method_exists($user, 'getId')) {
-                $userId = $user->getId();
-            } elseif (isset($user->id)) {
-                $userId = $user->id;
+            if ($reviewId) {
+                $existingReview = $this->reviewRepository->getById((int)$reviewId);
+                if ($existingReview && $existingReview->user_id == $userId) {
+                    $this->reviewRepository->updateReview((int)$reviewId, $score, $text);
+                }
+            } else {
+                $this->reviewRepository->addReview($bookId, (int)$userId, $score, $text);
             }
 
-            if (!$userId && method_exists($user, 'getAttributes')) {
-                $userId = $user->getAttributes()['id'] ?? null;
-            }
-
-            $this->reviewRepository->addReview($id, (int)$userId, $score, $text);
-
-            header("Location: /boek-info?id=$id");
+            header("Location: /boek-info?id=$bookId");
             exit;
         }
 
-        $rows = $this->bookRepository->getGenre($id);
-
+        $rows = $this->bookRepository->getGenre($bookId);
         $book = !empty($rows) ? (object) $rows[0] : new \stdClass();
-
-        $reviews = $this->reviewRepository->getReviewsByBook($id);
+        $reviews = $this->reviewRepository->getReviewsByBook($bookId);
 
         return $this->templateEngine->render('BookInfo.html', [
-            'id'      => $id,
+            'id'      => $bookId,
             'book'    => $book,
             'user'    => $user,
             'reviews' => $reviews

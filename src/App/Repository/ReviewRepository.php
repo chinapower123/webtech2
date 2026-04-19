@@ -53,4 +53,16 @@ class ReviewRepository implements RepositoryInterface
 
         return $this->dataMapper->select($sql, $bookId);
     }
+
+    public function getById(int $id): ?object
+    {
+        $result = $this->dataMapper->select("SELECT * FROM reviews WHERE id = ?", $id);
+        return !empty($result) ? $result[0] : null;
+    }
+
+    public function updateReview(int $id, int $score, string $text): void
+    {
+        $sql = "UPDATE reviews SET score = ?, text = ? WHERE id = ?";
+        $this->dataMapper->select($sql, $score, $text, $id);
+    }
 }

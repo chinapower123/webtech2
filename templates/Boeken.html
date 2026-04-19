@@ -32,6 +32,25 @@
 <main class="container">
     <h1>Beschikbare boeken</h1>
 
+    <div class="genre-filters" style="margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+        <span style="font-weight: bold; color: #2c3e50;">Filter op genre:</span>
+
+        <a href="/boeken"
+           style="padding: 8px 15px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: bold;
+              <?= empty($activeGenre) ? 'background: #3498db; color: white;' : 'background: #ecf0f1; color: #2c3e50;' ?>">
+            Alle
+        </a>
+
+        <?php foreach ($allGenres as $g): ?>
+        <?php $genreName = strtolower($g->name); ?>
+        <a href="/boeken?genre=<?= $genreName ?>"
+           style="padding: 8px 15px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: bold;
+                  <?= ($activeGenre === $genreName) ? 'background: #3498db; color: white;' : 'background: #ecf0f1; color: #2c3e50;' ?>">
+            <?= htmlspecialchars($g->name) ?>
+        </a>
+        <?php endforeach; ?>
+    </div>
+
     <div class="admin-controls">
         <?php if (isset($user) && in_array('admin', $user->getRoles())): ?>
         <div class="dropdown">
@@ -51,7 +70,15 @@
         <div class="book-card">
             <div class="book-info">
                 <h3><?= htmlspecialchars($book->title) ?></h3>
-                <p class="author">door <?= htmlspecialchars($book->author?? 'Onbekende auteur') ?></p>
+                <p class="author">door <?= htmlspecialchars($book->author ?? 'Onbekende auteur') ?></p>
+
+                <div class="book-rating" style="margin-top: 8px; color: #f1c40f; font-weight: bold; font-size: 0.9rem;">
+                    <?php if (isset($book->average_score) && $book->average_score > 0): ?>
+                    ★ <?= number_format((float)$book->average_score, 1) ?> / 5
+                    <?php else: ?>
+                    <span style="color: #bdc3c7; font-weight: normal; font-size: 0.8rem;">Nog geen reviews</span>
+                    <?php endif; ?>
+                </div>
             </div>
             <div class="book-actions">
                 <a href="/boek-info?id=<?= $book->id ?>" class="btn-details">Bekijk Details</a>

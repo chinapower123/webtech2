@@ -108,7 +108,7 @@
         </div>
     </section>
 
-    <h2 class="section-title">Populaire boeken</h2>
+    <h2 class="section-title">Aangeraden</h2>
 
     <div class="book-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
         <?php
@@ -116,16 +116,23 @@
     ?>
 
         <?php foreach ($booksToShow as $book): ?>
-        <div class="book-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: white;">
-            <h3 style="margin-top: 0;"><?= htmlspecialchars($book->title) ?></h3>
-            <p>Door: <?= htmlspecialchars($book->author) ?></p>
-            <a href="/boek-info?id=<?= $book->id ?>" class="genre-link" style="display: inline-block; background: #3498db; color: white; text-align: center;">Bekijk details</a>
+        <div class="book-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: white; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="margin-top: 0; margin-bottom: 5px;"><?= htmlspecialchars($book->title) ?></h3>
+                <p style="margin-bottom: 10px;">Door: <?= htmlspecialchars($book->author) ?></p>
+
+                <div style="margin-bottom: 15px; color: #f1c40f; font-weight: bold;">
+                    <?php if (isset($book->average_score) && $book->average_score > 0): ?>
+                    ★ <?= number_format((float)$book->average_score, 1) ?>
+                    <?php else: ?>
+                    <span style="color: #bdc3c7; font-size: 0.8rem; font-weight: normal;">Nieuw!</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <a href="/boek-info?id=<?= $book->id ?>" class="genre-link" style="display: block; background: #3498db; color: white; text-align: center; margin: 0;">Bekijk details</a>
         </div>
         <?php endforeach; ?>
-
-        <?php if (empty($booksToShow)): ?>
-        <p>Geen boeken gevonden.</p>
-        <?php endif; ?>
     </div>
 
 </main>

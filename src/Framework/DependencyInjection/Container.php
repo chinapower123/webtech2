@@ -107,6 +107,7 @@ class Container
             '/boek-toevoegen'   => [$bookEditController, 'create'],
             '/boek-toevoegen-verwerken'   => [$bookEditController, 'store'],
             '/boek-verwijderen'   => [$bookEditController, 'delete'],
+            '/zoeken'      => [$bookController, 'index'],
 
             //genre
             '/genre-beheer' => [$genreController, 'index'],
